@@ -2,22 +2,22 @@
 #include <stdlib.h>
 using namespace std;
 
-int mult_recursiva(int a, int b) {
-    int ret;
+int soma_incrementos(int a, int b) {
+    int res;
 
-    if (a == 1) {
-        cout << b << " = ";
-        ret = b;
+    if (b == 0) {
+        cout << a << " = ";
+        res = a;
     }
     else {
-        cout << b << " + ";
-        ret = b + mult_recursiva(a-1, b);
+        cout << "1 + ";
+        res = 1 + soma_incrementos(a, b-1);
     }
 
-    return ret;
+    return res;
 }
 
-int a, b, mult;
+int a, b, soma;
 int main() {
     setlocale(LC_ALL, "Portuguese");
 
@@ -27,9 +27,8 @@ int main() {
     cout << "Digite um valor natural para B: ";
     cin >> b;
 
-    mult = mult_recursiva(a, b);
-    cout << mult << endl; 
-
+    soma = soma_incrementos(a, b);
+    cout << soma << endl;
 
     return 0;
 }

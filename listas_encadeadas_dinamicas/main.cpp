@@ -33,6 +33,9 @@ elemento* criar_elemento(int val, int chave) {
     return ptr;
 }
 
+//
+// 1
+//
 void inserir_elemento(lista *lis, int val, int chave) {
     elemento *ptr;
 
@@ -45,6 +48,38 @@ void inserir_elemento(lista *lis, int val, int chave) {
     lis->total += val;
 }
 
+//
+// 2
+//
+elemento* remover_elemento(lista *lis, elemento *elem, int val) {
+    elemento *ret = NULL;
+
+    if (elem != NULL) {
+        if (lis->ini != NULL && lis->ini->valor == val) {
+            ret = elem;
+            lis->ini = lis->ini->prox;
+
+            lis->comprimento--;
+            lis->total -= ret->valor;
+        }
+        else {
+            if (elem->prox != NULL && elem->prox->valor == val) {
+                ret = elem->prox;
+
+                elem->prox = elem->prox->prox;
+
+                lis->comprimento--;
+                lis->total -= ret->valor;
+            }
+            else {
+                ret = remover_elemento(lis, elem->prox, val);
+            }
+        }
+    }
+
+    return ret;
+}
+
 void imprimir_valores(elemento *elem) {
     if (elem) {
         cout << "Elemento (" << elem->chave << "): " << elem->valor << endl;
@@ -52,12 +87,52 @@ void imprimir_valores(elemento *elem) {
     }
 }
 
+//
+// 3
+//
 void imprimir_lista(lista *lis) {
     if (lis->ini) {
         imprimir_valores(lis->ini);
     }
     else {
         cout << "A lista está vazia" << endl;
+    }
+}
+
+//
+// 5
+//
+int contar_mesma_ocorrencia(elemento *elem, int val) {
+    int ret;
+    int aux_contador;
+
+    if (elem == NULL) {
+        ret = 0;
+    }
+    else {
+        if (elem->valor == val) {
+            aux_contador = 1;
+        }
+        else {
+            aux_contador = 0;
+        }
+
+        ret = aux_contador + contar_mesma_ocorrencia(elem->prox, val);
+    }
+
+    return ret;
+}
+
+//
+// 6
+//
+void substituir_ocorrencias(elemento *elem, int valor_procurado, int valor_novo) {
+    if (elem != NULL) {
+        if (elem->valor == valor_procurado) {
+            elem->valor = valor_novo;
+        }
+
+        substituir_ocorrencias(elem->prox, valor_procurado, valor_novo);
     }
 }
 
@@ -76,7 +151,8 @@ int escolher_lista() {
 }
 
 lista lista1, lista2;
-int opcao, lista_escolhida, valor, chave1, chave2;
+int opcao, lista_escolhida, valor, subs, chave1, chave2;
+elemento *aux;
 int main() {
     setlocale(LC_ALL, "Portuguese");
 
@@ -120,6 +196,28 @@ int main() {
                 }
 
                 break;
+            case 2:
+                lista_escolhida = escolher_lista();
+
+                cout << "Digite o valor que deseja remover: ";
+                cin >> valor;
+
+                if (lista_escolhida == 1) {
+                    aux = remover_elemento(&lista1, lista1.ini, valor);
+                }
+                else {
+                    aux = remover_elemento(&lista2, lista2.ini, valor);
+                }
+
+                cout << endl;
+                if (aux) {
+                    cout << "Elemento removido com sucesso." << endl;
+                }
+                else {
+                    cout << "Elemento não encontrado na lista" << endl;
+                }
+
+                break;
             case 3:
                 cout << "\n----- Lista 1 -----" << endl;
                 imprimir_lista(&lista1);
@@ -128,6 +226,49 @@ int main() {
                 cout << "----- Lista 2 -----" << endl;
                 imprimir_lista(&lista2);
                 cout << endl;
+
+                break;
+            case 4:
+                cout << "\n----- Lista 1 -----" << endl;
+                cout << "Comprimento: " << lista1.comprimento << endl;
+                cout << "Total dos valores: " << lista1.total << endl;
+
+                cout << "\n----- Lista 2 -----" << endl;
+                cout << "Comprimento: " << lista2.comprimento << endl;
+                cout << "Total dos valores: " << lista2.total << endl;
+
+                break;
+            case 5:
+                lista_escolhida = escolher_lista();
+
+                cout << "Digite o valor que deseja contar a quantidade de ocorrências na lista: ";
+                cin >> valor;
+
+                if (lista_escolhida == 1) {
+                    cout << "\nNúmero de ocorrências: " << contar_mesma_ocorrencia(lista1.ini, valor) << endl;
+                }
+                else {
+                    cout << "\nNúmero de ocorrências: " << contar_mesma_ocorrencia(lista2.ini, valor) << endl;
+                }
+
+                break;
+            case 6:
+                lista_escolhida = escolher_lista();
+
+                cout << "Digite o valor que deseja substituir: ";
+                cin >> valor;
+
+                cout << "Digite o valor pelo qual deseja substitui-lo: ";
+                cin >> subs;
+
+                if (lista_escolhida == 1) {
+                    substituir_ocorrencias(lista1.ini, valor, subs);
+                }
+                else {
+                    substituir_ocorrencias(lista2.ini, valor, subs);
+                }
+
+                cout << "Valores substituidos com sucesso." << endl;
 
                 break;
             case 0:

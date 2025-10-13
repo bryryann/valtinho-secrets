@@ -10,13 +10,11 @@ struct elemento {
 
 struct lista {
     int comprimento;
-    int total;
     elemento *ini;
 };
 
 void inicializar_lista(lista *lis) {
     lis->comprimento = 0;
-    lis->total = 0;
     lis->ini = NULL;
 }
 
@@ -45,7 +43,6 @@ void inserir_elemento(lista *lis, int val, int chave) {
     lis->ini = ptr;
 
     lis->comprimento++;
-    lis->total += val;
 }
 
 //
@@ -60,7 +57,6 @@ elemento* remover_elemento(lista *lis, elemento *elem, int val) {
             lis->ini = lis->ini->prox;
 
             lis->comprimento--;
-            lis->total -= ret->valor;
         }
         else {
             if (elem->prox != NULL && elem->prox->valor == val) {
@@ -69,7 +65,6 @@ elemento* remover_elemento(lista *lis, elemento *elem, int val) {
                 elem->prox = elem->prox->prox;
 
                 lis->comprimento--;
-                lis->total -= ret->valor;
             }
             else {
                 ret = remover_elemento(lis, elem->prox, val);
@@ -97,6 +92,13 @@ void imprimir_lista(lista *lis) {
     else {
         cout << "A lista está vazia" << endl;
     }
+}
+
+//
+// 4
+//
+int contar_comprimento(lista lis) {
+    return lis.comprimento;
 }
 
 //
@@ -230,12 +232,10 @@ int main() {
                 break;
             case 4:
                 cout << "\n----- Lista 1 -----" << endl;
-                cout << "Comprimento: " << lista1.comprimento << endl;
-                cout << "Total dos valores: " << lista1.total << endl;
+                cout << "Comprimento: " << contar_comprimento(lista1) << endl;
 
                 cout << "\n----- Lista 2 -----" << endl;
-                cout << "Comprimento: " << lista2.comprimento << endl;
-                cout << "Total dos valores: " << lista2.total << endl;
+                cout << "Comprimento: " << contar_comprimento(lista2) << endl;
 
                 break;
             case 5:
@@ -278,6 +278,8 @@ int main() {
                 cout << "\nOpção inválida. Tente novamente" << endl;
         }
 
+        system("pause");
+        system("cls");
     } while (opcao != 0);
 
     return 0;

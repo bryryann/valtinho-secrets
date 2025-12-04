@@ -1,19 +1,4 @@
-#include <iostream>
-#include <stdlib.h>
-using namespace std;
-
-struct Node {
-    int valor;
-
-    Node *esq;
-    Node *dir;
-};
-
-struct Arvore {
-    int total;
-
-    Node *raiz;
-};
+#include "arvores.h"
 
 void inicializar_lista(Arvore *arv) {
     arv->total = 0;
@@ -62,7 +47,7 @@ Node* inserir_ordenado(Arvore *arv, Node *ptr, int valor) {
             ptr->dir = inserir_ordenado(arv, ptr->dir, valor);
         }
         else {
-            cout << "ITEM JÁ EXISTENTE" << endl;
+            std::cout << "ITEM JÁ EXISTENTE" << std::endl;
         }
     }
     else {
@@ -132,54 +117,29 @@ Node* remover(Arvore *arv, Node *ptr, int valor) {
         }
     }
     else {
-        cout << "ELEMENTO AUSENTE" << endl;
+        std::cout << "ELEMENTO AUSENTE" << std::endl;
     }
 
     return ret;
 }
 
-void imprime_arvore(Node *ptr, string tipo) {
+void imprime_arvore(Node *ptr, std::string tipo) {
     if (ptr != nullptr) {
         if (tipo == "PRE") {
-            cout << ptr->valor << " -> ";
+            std::cout << ptr->valor << " -> ";
         }
 
         imprime_arvore(ptr->esq, tipo);
 
         if (tipo == "CEN") {
-            cout << ptr->valor << " -> ";
+            std::cout << ptr->valor << " -> ";
         }
 
         imprime_arvore(ptr->dir, tipo);
 
         if (tipo == "POS") {
-            cout << ptr->valor << " -> ";
+            std::cout << ptr->valor << " -> ";
         }
     }
-}
-
-int main() {
-    setlocale(LC_ALL, "Portuguese");
-    Arvore arv;
-
-    inicializar_lista(&arv);
-
-    inserir_ordenado(&arv, arv.raiz, 6);
-    inserir_ordenado(&arv, arv.raiz, 5);
-    inserir_ordenado(&arv, arv.raiz, 5);
-    inserir_ordenado(&arv, arv.raiz, 8);
-    inserir_ordenado(&arv, arv.raiz, 4);
-    inserir_ordenado(&arv, arv.raiz, 7);
-    inserir_ordenado(&arv, arv.raiz, 11);
-    inserir_ordenado(&arv, arv.raiz, 10);
-    inserir_ordenado(&arv, arv.raiz, 2);
-    inserir_ordenado(&arv, arv.raiz, 12);
-    inserir_ordenado(&arv, arv.raiz, 1);
-    inserir_ordenado(&arv, arv.raiz, 3);
-    inserir_ordenado(&arv, arv.raiz, 9);
-
-    imprime_arvore(arv.raiz, "CEN");
-
-    return 0;
 }
 
